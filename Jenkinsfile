@@ -7,7 +7,6 @@ pipeline {
 
   environment {
     ARTIFACT_ID = "elbuo8/webapp:${env.BUILD_NUMBER}"
-    DOCKER_REGISTRY = credentials('REGISTRY_CREDENTIALS')
   }
    stages {
    stage('Building image') {
@@ -26,7 +25,7 @@ pipeline {
     }
    stage('Deploy Image') {
       steps{
-        sshagent(credentials: [REGISTRY_CREDENTIALS]) {
+        sshagent(credentials: ['REGISTRY_CREDENTIALS']) {
          sh '''
           docker tag testapp kellykjd/testapp:latest
           docker push kellykjd/testapp:latest
