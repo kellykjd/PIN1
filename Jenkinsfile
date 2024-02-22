@@ -12,7 +12,7 @@ pipeline {
    stage('Building image') {
       steps{
           sh '''
-          mkdir webapp
+          mkdir -p webapp
           cp Dockerfile webapp/
           cd webapp
           docker build -t testapp .
