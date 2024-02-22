@@ -7,6 +7,9 @@ pipeline {
 
   environment {
     ARTIFACT_ID = "elbuo8/webapp:${env.BUILD_NUMBER}"
+    DOCKER_HUB_LOGIN_USR = credentials('docker_hub_user')
+    DOCKER_HUB_LOGIN_PSW = credentials('docker_hub_pass')
+
   }
    stages {
    stage('Building image') {
@@ -23,16 +26,15 @@ pipeline {
         sh "docker run testapp npm test"
       }
     }
-   stage('Deploy Image') {
-      steps{
-        sshagent(credentials: ['REGISTRY_CREDENTIALS']) {
-         sh '''
-          docker tag testapp kellykjd/testapp:latest
-          docker push kellykjd/testapp:latest
-        ''' 
-        }
-        }
-      }
+    stage('Deploy Image') {
+       steps{
+           sh '''
+           docker login --username=$DOCKER_HUB_LOGIN_USR --password=$DOCKER_HUB_LOGIN_PSW
+           docker tag testapp kellykjd/testapp:latest
+           docker push kellykjd/testapp:latest
+           '''
+       }
+    }
     }
 }
 
