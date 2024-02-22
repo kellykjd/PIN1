@@ -26,8 +26,8 @@ pipeline {
    stage('Deploy Image') {
       steps{
         sh '''
-        docker tag testapp kellykjd/testapp:latest
-        docker push kellykjd/testapp:latest  
+        docker tag testapp testapp:latest
+        docker push testapp:latest  
         '''
         }
       }
